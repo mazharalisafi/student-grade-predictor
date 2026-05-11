@@ -66,12 +66,28 @@ predicted = model.predict([[study, attend]])
 print(f"\nPredicted Final Grade: {predicted[0]:.1f} / 100")
 
 # -----------------------------------------------
-# STEP 7: Show a Graph
+# STEP 7: Show a Line Graph
 # -----------------------------------------------
-plt.scatter(y_test, predictions, color='blue')
-plt.xlabel("Actual Grade")
-plt.ylabel("Predicted Grade")
+plt.figure(figsize=(8, 5))
+
+# Sort values so line connects properly
+sorted_indices = y_test.argsort()
+actual_sorted = y_test.values[sorted_indices]
+predicted_sorted = predictions[sorted_indices]
+
+# Plot actual grades line
+plt.plot(actual_sorted, actual_sorted, color='blue', marker='o',
+         linewidth=2, markersize=6, label='Actual Grade')
+
+# Plot predicted grades line
+plt.plot(actual_sorted, predicted_sorted, color='red', marker='o',
+         linewidth=2, markersize=6, linestyle='--', label='Predicted Grade')
+
+plt.xlabel("Student (sorted by actual grade)")
+plt.ylabel("Grade")
 plt.title("Actual vs Predicted Grades")
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
 plt.tight_layout()
 plt.savefig("grade_results.png")
 plt.show()
